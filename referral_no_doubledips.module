@@ -1,0 +1,39 @@
+<?php
+
+function referral_no_doubledips_userpoints($op, $params = array())
+{
+  static $invite_points_awarded = array();
+  switch($op) {
+    case 'points before':
+      // The install script shoudl have ensured that the referral poitns are
+      // granted after the invite ones. If a request is made to grant 
+      // referral points for signing a user that has already had invite points
+      // granted, then deny the request.
+      if ($params['reference'] == 'userpoints_invite')
+      {
+        if (preg_match('/invite register invited (.*)/', $params['operation'], $matches)) 
+        {
+          $invite_points_awarded[$matches[1]] = $params['uid'];
+        }
+      }
+      if ($params['reference'] == 'referral')
+      {
+        if (preg_match('/referral by (.*)/', $params['operation'], $matches)) 
+        {
+          $invitee = $params['uid'];
+          if (isset($invite_points_awarded[$invitee]))
+          {
+            // Then invite points have already been awarded for this invitee.. deny any more points.
+            return FALSE;
+          }
+        }
+        else if (preg_match('/referral signed (.*)/', $params['operation'], $matches)) 
+        {
+          if (isset($invite_points_awarded[$matches[1]]))
+          {
+            return FALSE;
+          }
+        }
+      }
+  }
+}
