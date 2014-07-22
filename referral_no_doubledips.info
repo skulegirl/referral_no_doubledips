@@ -1,5 +1,5 @@
-version = "6.x-1.0"
-core = 6.x
+version = "7.x-1.0"
+core = 7.x
 name = "referral no doubledips"
 description = 'module to ensure that referrals and invites don't both grant userpoints for the same user signing up'
 dependencies[] = my_referral_userpoints

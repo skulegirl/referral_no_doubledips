@@ -1,6 +1,9 @@
 <?php
 
-function referral_no_doubledips_userpoints($op, $params = array())
+/**
+ * Implemeht hook_userpoints
+ */
+function referral_no_doubledips_userpoints($op, &$params = array())
 {
   static $invite_points_awarded = array();
   switch($op) {

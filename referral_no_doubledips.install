@@ -7,7 +7,8 @@
 function referral_no_doubledips_install() {
   // We need the referral module's hook_user to run after the invite module's hook_user. This way, hook_userpoints will be called by
   // the userpoints_invite module before by the my_referral_userpoints module.
-  $weight = db_result(db_query("SELECT weight FROM {system} WHERE type = 'module' AND name = 'invite'"));
-  db_query("UPDATE {system} SET weight = %d WHERE type = 'module' AND name = 'referral'", $weight+5);
+  $weight = db_query("SELECT weight FROM {system} WHERE type = 'module' AND name = 'invite'")->fetchField();
+  db_query("UPDATE {system} SET weight = :weight WHERE type = 'module' AND name = 'referral'", 
+    array(':weight' => $weight+5));
 }
 
